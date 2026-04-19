@@ -1,7 +1,7 @@
 import json
 import anthropic
 from config import settings
-from agent.prompts import SYSTEM_PROMPT, DOCUMENT_ANALYSIS_PROMPT
+from agent.prompts import get_system_prompt, DOCUMENT_ANALYSIS_PROMPT
 
 
 class AccountingAgent:
@@ -16,7 +16,7 @@ class AccountingAgent:
         response = self.client.messages.create(
             model=self.model,
             max_tokens=self.max_tokens,
-            system=SYSTEM_PROMPT,
+            system=get_system_prompt(),
             messages=messages,
         )
         return response.content[0].text
@@ -77,7 +77,7 @@ class AccountingAgent:
         response = self.client.messages.create(
             model=self.model,
             max_tokens=2000,
-            system=SYSTEM_PROMPT,
+            system=get_system_prompt(),
             messages=[{"role": "user", "content": prompt}],
         )
         return response.content[0].text
