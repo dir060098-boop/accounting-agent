@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 import anthropic
 from config import settings
 from agent.prompts import get_system_prompt, DOCUMENT_ANALYSIS_PROMPT
@@ -22,7 +23,8 @@ class AccountingAgent:
         return response.content[0].text
 
     def analyze_document(self, text: str, filename: str) -> dict:
-        prompt = DOCUMENT_ANALYSIS_PROMPT.format(filename=filename, text=text[:8000])
+        today = datetime.now().strftime("%d.%m.%Y")
+        prompt = DOCUMENT_ANALYSIS_PROMPT.format(filename=filename, text=text[:8000], today=today)
 
         response = self.client.messages.create(
             model=self.model,
